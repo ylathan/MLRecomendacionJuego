@@ -8,7 +8,7 @@ app = FastAPI(title = 'Sistema de Recomendacion de Videojuegos (MLOps)',
             description='API para realizar consultas',
             version=' Nathaly Castro (2024)')
 
-df_developer = pd.read_parquet('.\\Dataset\\ETL_games_clean')
+df_developer = pd.read_parquet('Dataset/ETL_games_clean')
 
 @app.get('/', tags=['inicio'])
 async def inicio():
