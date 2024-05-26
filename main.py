@@ -8,7 +8,7 @@ app = FastAPI(title = 'Sistema de Recomendacion de Videojuegos (MLOps)',
             description='API para realizar consultas',
             version=' Nathaly Castro (2024)')
 
-df_developer = pd.read_parquet('.\\Dataset\\ETL_games_clean')
+df_developer = pd.read_parquet('Dataset/ETL_games_clean')
 
 @app.get('/', tags=['inicio'])
 async def inicio():
@@ -42,8 +42,8 @@ async def developer(desarrollador: str):
         }
     return developer_dict
 
-df_user_data =pd.read_parquet ('.\\Dataset\\user_data_price.parquet')
-df_reviews =pd.read_parquet('.\\Dataset\\user_reviews_clean.parquet')
+df_user_data =pd.read_parquet ('.\\API\\user_data_price.parquet')
+df_reviews =pd.read_parquet('.\\API\\user_reviews_clean.parquet')
 @app.get('/userdata/{User_id}')
 async def  userdata(User_id : str):
     '''Con el desarrollo de esta función se busca devolver la cantidad de dinero 
@@ -81,7 +81,7 @@ async def  userdata(User_id : str):
 
     return user_data_dic
 
-df_user_genre = pd.read_parquet('.\\Dataset\\user_for_genre.parquet')
+df_user_genre = pd.read_parquet('.\\API\\user_for_genre.parquet')
 @app.get('/UserForGenre/{genero}')
 async def UserForGenre(genero:str):
     # Se filtra para este genero 
@@ -105,19 +105,3 @@ async def UserForGenre(genero:str):
         "Horas jugadas": horas_por_año
     }
     return user_gnr_result
-
-df_best_developer_year = pd.read_parquet('.\\Dataset\\best_developer_year.parquet')
-@app.get('/best_developer_year/{anio}')
-async def best_developer_year(anio: int): 
-
-    # Se filtra el DataFrame para el año dado
-    year_data = df_best_developer_year[(df_best_developer_year['release_date'] == anio) & (df_best_developer_year['sentiment_analysis'] == 2)]
-    # Se obtienen los 3 principales desarrolladores con más juegos recomendados por usuarios
-    top_developers = year_data.groupby('developer').size().nlargest(3)    
-    # Se construye el diccionario con el resultado
-    best_dev_result = {
-    "Puesto 1": top_developers.index[0],
-    "Puesto 2": top_developers.index[1],
-    "Puesto 3": top_developers.index[2]
-    }
-    return best_dev_result
