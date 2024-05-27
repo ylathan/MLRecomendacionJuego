@@ -3,6 +3,9 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse
 import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 app = FastAPI(title = 'Sistema de Recomendacion de Videojuegos (MLOps)',
             description='API para realizar consultas',
@@ -42,8 +45,8 @@ async def developer(desarrollador: str):
         }
     return developer_dict
 
-df_user_data =pd.read_parquet ('.\\API\\user_data_price.parquet')
-df_reviews =pd.read_parquet('.\\API\\user_reviews_clean.parquet')
+df_user_data =pd.read_parquet ('Dataset/user_data_price.parquet')
+df_reviews =pd.read_parquet('Dataset/user_reviews_clean.parquet')
 @app.get('/userdata/{User_id}')
 async def  userdata(User_id : str):
     '''Con el desarrollo de esta función se busca devolver la cantidad de dinero 
@@ -81,7 +84,7 @@ async def  userdata(User_id : str):
 
     return user_data_dic
 
-df_user_genre = pd.read_parquet('.\\API\\user_for_genre.parquet')
+df_user_genre = pd.read_parquet('Dataset/user_for_genre.parquet')
 @app.get('/UserForGenre/{genero}')
 async def UserForGenre(genero:str):
     # Se filtra para este genero 
@@ -105,3 +108,37 @@ async def UserForGenre(genero:str):
         "Horas jugadas": horas_por_año
     }
     return user_gnr_result
+
+@app.get("/recomendacion_juego/{id}")
+def recomendacion_juego(id: int):
+
+     #Cargar el dataframe para aplicar el modelo
+    data_modelo = pd.read_parquet('./Dataset/df_recomendacion') 
+
+    # Primero, vamos a convertir la columna 'title' a una representación numérica usando TF-IDF (Frecuencia de Terminos - Freciencia Inversa de Terminos)
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(data_modelo['title'])
+
+    # Luego, vamos a añadir las columnas numéricas a nuestra matriz de características
+    features = np.column_stack([tfidf_matrix.toarray(), data_modelo['rating']])#, data_modelo['user_id'],])
+
+    # Verificamos la existencia del Id del juego a establecer simulitud de juegos
+    result = data_modelo[data_modelo['item_id'] == id]
+    nombre_del_juego=result.iloc[0]['title']
+
+    if result.empty:
+        return 'No se encontro el id'
+
+    # Reindexamos el DataFrame
+    data_aplicativo = data_modelo.reset_index(drop=True)
+
+    # Ahora, calculamos la matriz de similitud de coseno
+    similarity_matrix = cosine_similarity(features)
+
+    # Para hacer recomendaciones, puedes buscar los juegos más similares a un juego dado
+    juego = data_aplicativo[data_aplicativo['title'] == nombre_del_juego].index[0]
+    score = list(enumerate(similarity_matrix[juego]))
+    score= sorted(score, key=lambda x: x[1])
+    resultado = score[1:6]
+    total = data_modelo['title'].iloc[[i[0] for i in resultado]].tolist()
+    return {'Juego Recomendado ': total}
