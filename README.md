@@ -53,24 +53,25 @@ Devuelve la cantidad de ítems y el porcentaje de contenido gratuito por año se
   {"Año": 2022, "Cantidad de Items": 45, "Contenido Free": "25%"},
   {"Año": xxxx, "Cantidad de Items": xx, "Contenido Free": "xx%"}
 ]
-
+```
 ### userdata(User_id: str)
 Devuelve la cantidad de dinero gastado por el usuario, el porcentaje de recomendación basado en `reviews.recommend` y la cantidad de ítems.
 
 **Ejemplo de retorno:**
-```json
+```
 {
   "Usuario X": "us213ndjss09sdf",
   "Dinero gastado": "200 USD",
   "% de recomendación": "20%",
   "cantidad de items": 5
 }
+```
 
 ### UserForGenre(genero: str)
 Devuelve el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año de lanzamiento.
 
 **Ejemplo de retorno:**
-```json
+```
 {
   "Usuario con más horas jugadas para Género X": "us213ndjss09sdf",
   "Horas jugadas": [
@@ -79,16 +80,17 @@ Devuelve el usuario que acumula más horas jugadas para el género dado y una li
     {"Año": 2011, "Horas": 23}
   ]
 }
+```
 
 ### developer_reviews_analysis(desarrolladora: str)
 Devuelve un diccionario con el nombre del desarrollador como llave y una lista con la cantidad total de registros de reseñas de usuarios categorizados con un análisis de sentimiento como valor positivo o negativo.
 
 **Ejemplo de retorno:**
-```json
+```
 {
   "Valve": {"Negative": 182, "Positive": 278}
 }
-
+```
 ## Análisis Exploratorio de Datos (EDA)
 
 Realizaremos el EDA para entender las relaciones entre las variables del dataset, identificar outliers o anomalías, y descubrir patrones interesantes. El análisis incluirá:
@@ -106,9 +108,18 @@ Entrenaremos nuestro modelo de Machine Learning usando la herramienta de similit
 Ingresando el ID del producto, devuelve una lista con 5 juegos recomendados similares al ingresado.
 
 **Ejemplo de retorno:**
-```json
-
-##Recursos
+```
+{
+  "Juegos recomendados": [
+    "Call of Duty®: Modern Warfare® 2",
+    "Call of Duty®: Modern Warfare® 3",
+    "Medal of Honor™",
+    "Call of Duty®",
+    "Call of Duty®: Black Ops"
+  ]
+}
+```
+## Recursos
 - FastAPI Documentation
 - RENDER Documentation
 - Pandas Documentation
