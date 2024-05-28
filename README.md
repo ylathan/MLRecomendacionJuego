@@ -47,7 +47,7 @@ Proponemos las siguientes consultas a través de una API creada con FastAPI y de
 Devuelve la cantidad de ítems y el porcentaje de contenido gratuito por año según la empresa desarrolladora.
 
 **Ejemplo de retorno:**
-```json
+```
 [
   {"Año": 2023, "Cantidad de Items": 50, "Contenido Free": "27%"},
   {"Año": 2022, "Cantidad de Items": 45, "Contenido Free": "25%"},
@@ -120,7 +120,7 @@ Ingresando el ID del producto, devuelve una lista con 5 juegos recomendados simi
 }
 ```
 ## Recursos
-- FastAPI Documentation
-- RENDER Documentation
-- Pandas Documentation
-- Scikit-learn Documentation
+- [FastAPI](https://fastapi.tiangolo.com/tutorial/)
+- [RENDER](https://github.com/HX-FNegrete/render-fastapi-tutorial) 
+- [Similitud_del_coseno](https://youtu.be/7nago29IlxM)
+- [EDA](https://medium.com/swlh/introduction-to-exploratory-data-analysis-eda-d83424e47151)
