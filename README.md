@@ -101,10 +101,10 @@ Realizaremos el EDA para entender las relaciones entre las variables del dataset
 - Visualización del análisis del sentimiento.
 - Tendencia de aumento de reviews después del año 2013, mostrando un gran crecimiento en la participación social de la industria de juegos.
 
-###Modelo de Machine Learning
+### Modelo de Machine Learning
 Entrenaremos nuestro modelo de Machine Learning usando la herramienta de similitud del coseno para desarrollar un sistema de recomendación item-item.
 
-### recomendacion_juego(id de producto: str)
+## recomendacion_juego(id de producto: str)
 Ingresando el ID del producto, devuelve una lista con 5 juegos recomendados similares al ingresado.
 
 **Ejemplo de retorno:**
